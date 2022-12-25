@@ -1,5 +1,7 @@
 package com.example.backend.user;
 
+import com.example.backend.task.Task;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -7,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -39,4 +43,12 @@ public class User {
     @Transient
     private String roles = "ROLE_USER";
 
+    @JsonIgnore
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+    private Set<Task> taskSet = new HashSet<>();
+
+    public void addTask(Task task) {
+        taskSet.add(task);
+        task.setUser(this);
+    }
 }
