@@ -24,6 +24,7 @@ public class TaskServiceImpl implements TaskService {
     public Task save(Task task) {
         User currentLoggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
         task.setUser(currentLoggedInUser);
+        task.setIfCompleted(false);
         currentLoggedInUser.addTask(task);
 
         return taskRepository.save(task);
@@ -37,6 +38,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Optional<Task> findById(int id) {
         return taskRepository.findById(id);
+    }
+
+    @Override
+    public List<Task> findAllByUser() {
+        User currentLoggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        return taskRepository.findAllByUser(currentLoggedInUser);
     }
 
     @Override

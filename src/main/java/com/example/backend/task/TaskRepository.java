@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
+    List<Task> findAllByUser(User user);
     List<Task> findAllByUserAndIfCompletedAndDueTo(User user, Boolean ifCompleted, LocalDateTime dueTo);
     List<Task> findAllByUserAndDueTo(User user, LocalDateTime dueTo);
 }

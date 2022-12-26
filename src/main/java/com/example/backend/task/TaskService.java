@@ -13,6 +13,7 @@ public interface TaskService {
 
     Optional<Task> findById(int id);
 
+    List<Task> findAllByUser();
     List<Task> findAllByUserAndIfCompletedAndDueTo(Boolean ifCompleted, LocalDateTime dueTo);
     List<Task> findAllByUserAndDueTo(User user, LocalDateTime dueTo);
 }

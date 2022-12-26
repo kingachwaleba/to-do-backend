@@ -26,6 +26,12 @@ public class TaskController {
         return ResponseEntity.ok(taskService.save(task));
     }
 
+    @GetMapping("/task/get")
+    public ResponseEntity<?> get() {
+
+        return ResponseEntity.ok(taskService.findAllByUser());
+    }
+
     @DeleteMapping("/task/delete/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable int id) {
         Task task = taskService.findById(id).orElseThrow(TaskNotFoundException::new);
