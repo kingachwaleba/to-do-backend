@@ -21,8 +21,6 @@ public class TaskController {
     @Transactional
     @PostMapping("/task/add")
     public ResponseEntity<?> addTask(@Valid @RequestBody Task task) {
-        if (task.getDueTo().isBefore(LocalDateTime.now()))
-            return new ResponseEntity<>("Incorrect date chosen!", HttpStatus.BAD_REQUEST);
 
         return ResponseEntity.ok(taskService.save(task));
     }
