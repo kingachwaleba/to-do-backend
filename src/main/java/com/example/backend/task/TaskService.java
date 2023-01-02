@@ -16,8 +16,5 @@ public interface TaskService {
     Optional<Task> findById(int id);
 
     List<Task> findAllByUser(User user, int order);
-    List<Task> findAllByUserAndIfCompleted(int ifCompleted);
-    List<Task> findAllByUserOrderByDueTo(int dueToFlag);
     List<Task> findAllByUserAndIfCompletedOrderByDueTo(User user, Boolean ifCompleted, int order);
-    List<Task> findAllByUserAndDueTo(User user, LocalDateTime dueTo);
 }

@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
-    List<Task> findAllByUser(User user);
     List<Task> findAllByUserOrderByDueToAsc(User user);
     List<Task> findAllByUserOrderByDueToDesc(User user);
     List<Task> findAllByUserAndIfCompletedOrderByDueToAsc(User user, Boolean ifCompleted);

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class TaskController {
 
     private final TaskService taskService;
@@ -39,17 +38,8 @@ public class TaskController {
                 userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new), orderValue));
     }
 
-//    @GetMapping("/task/get/{flag}")
-//    public ResponseEntity<?> getAllByUserAndIfCompleted(@PathVariable String flag) {
-//        int flagValue = Integer.parseInt(flag);
-//        if (flagValue != 0 && flagValue != 1)
-//            return new ResponseEntity<>("Bad input!", HttpStatus.BAD_REQUEST);
-//
-//        return ResponseEntity.ok(taskService.findAllByUserAndIfCompleted(flagValue));
-//    }
-
     @GetMapping("/task/get/{ifCompleted}/{order}")
-    public ResponseEntity<?> findAllByUserAndIfCompletedAndDueToOrderByDueTo(@PathVariable String ifCompleted, @PathVariable String order) {
+    public ResponseEntity<?> getAllAndFilterAndOrder(@PathVariable String ifCompleted, @PathVariable String order) {
         int ifCompletedValue = Integer.parseInt(ifCompleted);
         if (ifCompletedValue != 0 && ifCompletedValue != 1)
             return new ResponseEntity<>("Bad input!", HttpStatus.BAD_REQUEST);
@@ -62,15 +52,6 @@ public class TaskController {
 
         return ResponseEntity.ok(taskService.findAllByUserAndIfCompletedOrderByDueTo(
                 currentLoggedInUser, ifCompletedValue == 1, orderValue));
-    }
-
-    @GetMapping("/task/get/flag/{date}")
-    public ResponseEntity<?> getAllByUserOrderByDueTo(@PathVariable String date) {
-        int flagValue = Integer.parseInt(date);
-        if (flagValue != 0 && flagValue != 1)
-            return new ResponseEntity<>("Bad input!", HttpStatus.BAD_REQUEST);
-
-        return ResponseEntity.ok(taskService.findAllByUserAndIfCompleted(flagValue));
     }
 
     @PutMapping("/task/{id}")
