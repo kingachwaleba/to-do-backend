@@ -6,6 +6,8 @@ import com.example.backend.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,10 +60,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findAllByUser() {
-        User currentLoggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
-
-        return taskRepository.findAllByUser(currentLoggedInUser);
+    public List<Task> findAllByUser(User user, int order) {
+        if (order == 0) {
+            return taskRepository.findAllByUserOrderByDueToAsc(user);
+        }
+        else {
+            return taskRepository.findAllByUserOrderByDueToDesc(user);
+        }
     }
 
     @Override
@@ -73,10 +78,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findAllByUserAndIfCompletedAndDueTo(Boolean ifCompleted, LocalDateTime dueTo) {
+    public List<Task> findAllByUserOrderByDueTo(int dueToFlag) {
         User currentLoggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
-        return taskRepository.findAllByUserAndIfCompletedAndDueTo(currentLoggedInUser, ifCompleted, dueTo);
+        return taskRepository.findAllByUser(currentLoggedInUser).stream().filter(
+                task -> task.getIfCompleted().equals(dueToFlag >= 1)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Task> findAllByUserAndIfCompletedOrderByDueTo(User user, Boolean ifCompleted, int order) {
+        if (order == 0) {
+            return taskRepository.findAllByUserAndIfCompletedOrderByDueToAsc(user, ifCompleted);
+        }
+        else {
+            return taskRepository.findAllByUserAndIfCompletedOrderByDueToDesc(user, ifCompleted);
+        }
     }
 
     @Override
