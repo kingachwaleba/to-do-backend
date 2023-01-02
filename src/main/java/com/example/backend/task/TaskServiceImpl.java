@@ -31,6 +31,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task edit(Task task) {
+        return null;
+    }
+
+    @Override
+    public Task editStatus(Task task) {
+        task.setIfCompleted(!task.getIfCompleted());
+
+        return taskRepository.save(task);
+    }
+
+    @Override
     public void delete(Task task) {
         taskRepository.delete(task);
     }

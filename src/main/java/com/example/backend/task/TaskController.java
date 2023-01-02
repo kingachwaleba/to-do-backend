@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class TaskController {
 
     private final TaskService taskService;
@@ -30,6 +31,19 @@ public class TaskController {
     public ResponseEntity<?> get() {
 
         return ResponseEntity.ok(taskService.findAllByUser());
+    }
+
+    @PutMapping("/task/{id}")
+    public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Task task) {
+
+        return ResponseEntity.ok(taskService.edit(task));
+    }
+
+    @PutMapping("/task/status/{id}")
+    public ResponseEntity<?> editStatus(@PathVariable int id) {
+
+        return ResponseEntity.ok(
+                taskService.editStatus(taskService.findById(id).orElseThrow(TaskNotFoundException::new)));
     }
 
     @DeleteMapping("/task/delete/{id}")
