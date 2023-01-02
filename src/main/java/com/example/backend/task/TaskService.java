@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface TaskService {
 
     Task save(Task task);
-    Task edit(Task task);
+    Task edit(Task previousTask, Task editedTask);
     Task editStatus(Task task);
     void delete(Task task);
 

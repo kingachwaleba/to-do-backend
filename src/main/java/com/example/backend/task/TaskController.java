@@ -36,7 +36,8 @@ public class TaskController {
     @PutMapping("/task/{id}")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Task task) {
 
-        return ResponseEntity.ok(taskService.edit(task));
+        return ResponseEntity.ok(
+                taskService.edit(taskService.findById(id).orElseThrow(TaskNotFoundException::new), task));
     }
 
     @PutMapping("/task/status/{id}")

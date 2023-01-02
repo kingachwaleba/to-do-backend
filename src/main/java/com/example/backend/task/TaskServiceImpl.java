@@ -31,8 +31,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task edit(Task task) {
-        return null;
+    public Task edit(Task previousTask, Task editedTask) {
+        previousTask.setTitle(editedTask.getTitle());
+        previousTask.setContent(editedTask.getContent());
+        previousTask.setDueTo(editedTask.getDueTo());
+
+        return taskRepository.save(previousTask);
     }
 
     @Override
