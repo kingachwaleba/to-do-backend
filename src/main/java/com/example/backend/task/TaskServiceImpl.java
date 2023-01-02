@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -61,6 +62,14 @@ public class TaskServiceImpl implements TaskService {
         User currentLoggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
 
         return taskRepository.findAllByUser(currentLoggedInUser);
+    }
+
+    @Override
+    public List<Task> findAllByUserAndIfCompleted(int ifCompleted) {
+        User currentLoggedInUser = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        return taskRepository.findAllByUser(currentLoggedInUser).stream().filter(
+                task -> task.getIfCompleted().equals(ifCompleted >= 1)).collect(Collectors.toList());
     }
 
     @Override

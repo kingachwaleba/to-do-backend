@@ -31,6 +31,15 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findAllByUser());
     }
 
+    @GetMapping("/task/get/{flag}")
+    public ResponseEntity<?> getAllByUserAndIfCompleted(@PathVariable String flag) {
+        int flagValue = Integer.parseInt(flag);
+        if (flagValue != 0 && flagValue != 1)
+            return new ResponseEntity<>("Bad input!", HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity.ok(taskService.findAllByUserAndIfCompleted(flagValue));
+    }
+
     @PutMapping("/task/{id}")
     public ResponseEntity<?> editOne(@PathVariable int id, @RequestBody Task task) {
 
