@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface UserService {
 
     User save(User user);
+    void changeUserPassword(User user, String password);
     Optional<User> findByEmail(String email);
     Optional<User> findCurrentLoggedInUser();
     List<String> getErrorList(BindingResult bindingResult);
@@ -15,4 +16,6 @@ public interface UserService {
     List<String> validation(BindingResult bindingResult, String password);
     Boolean existsByLogin(String login);
     Boolean existsByEmail(String email);
+    Boolean checkIfValidOldPassword(User user, String oldPassword);
+    void delete(User user);
 }

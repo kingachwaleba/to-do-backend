@@ -4,6 +4,9 @@ import com.example.backend.config.ErrorMessage;
 import com.example.backend.config.JwtProvider;
 import com.example.backend.config.JwtResponse;
 import com.example.backend.helpers.LoginForm;
+import com.example.backend.helpers.DeletePasswordHolder;
+import com.example.backend.helpers.UpdatePasswordHolder;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,5 +70,32 @@ public class UserController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         return ResponseEntity.ok(new JwtResponse(jwtToken, expiryDate, userDetails.getUsername()));
+    }
+
+    @PutMapping("/account/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody UpdatePasswordHolder updatePasswordHolder,
+                                            BindingResult bindingResult) {
+        String password = updatePasswordHolder.getPassword();
+
+        if (userService.validation(bindingResult, password).size() != 0)
+            return new ResponseEntity<>(errorMessage.get("data.error"), HttpStatus.BAD_REQUEST);
+
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        userService.changeUserPassword(user, password);
+
+        return new ResponseEntity<>("User password has been changed!", HttpStatus.OK);
+    }
+
+    @PutMapping("/delete-account")
+    public ResponseEntity<?> deleteAccount(@RequestBody DeletePasswordHolder password) {
+        User user = userService.findCurrentLoggedInUser().orElseThrow(UserNotFoundException::new);
+
+        if (!userService.checkIfValidOldPassword(user, password.getPassword()))
+            return new ResponseEntity<>("Incorrect password given!", HttpStatus.BAD_REQUEST);
+
+        userService.delete(user);
+
+        return new ResponseEntity<>("Account has been deleted!", HttpStatus.OK);
     }
 }
