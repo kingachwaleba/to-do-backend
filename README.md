@@ -21,4 +21,4 @@ It is To-Do App performing CRUD operations. A user can:
 * delete a chosen task,
 * display all user's tasks,
 * sort tasks ascending or descending by date,
-* filter completed and uncompleted tasks.
+* filter tasks by completed flag.
