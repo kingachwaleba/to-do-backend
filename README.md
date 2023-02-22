@@ -15,7 +15,7 @@ Technologies used to create this project:
 * Spring Boot: 2.7.6
 * IDE - IntelliJ IDEA Ultimate: 2022.2.3
 
-## Technologies
+## Setup
 Firstly, change your database configuration in [application.properties](src/main/resources/application.properties) file.
 Then, to run backend application use:
 ```
